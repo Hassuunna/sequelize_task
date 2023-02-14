@@ -1,21 +1,10 @@
 import * as dotenv from 'dotenv'
 import cors from 'cors'
 import express from 'express'
-import mysql from 'mysql2/promise'
 import models from '../models/index.js'
-import { Op } from 'sequelize'
-const { data_objects, levels, elements, sequelize } = models
+const { data_objects, levels, elements } = models
 
 dotenv.config()
-
-//Connect DATABASE here
-const connection = await mysql.createConnection({
-	uri: process.env.DATABASE_URL,
-	// Don’t allow multiple statements
-	multipleStatements: false
-})
-
-console.log('Database Connected')
 
 const app = express()
 const port = process.env.PORT || 8080
@@ -39,15 +28,15 @@ app.use(cors({
 app.post('/create', async (req, res) => {
 	const DataObject = req.body
 	if (!'name' in DataObject) {
-		res.status(400).send({ message: 'Invalid' })
+		res.status(400).send({ message: 'name of the dataObject is not specified' })
 	}
-	const DataObj = await data_objects.create({
+	await data_objects.create({
 		dataobject_name: DataObject.name,
 		createdAt: new Date(),
 		updatedAt: new Date()
 	})
 	for (const level of DataObject?.levels) {
-		const lvl = await levels.create({
+		await levels.create({
 			level_name: level.levelName,
 			level_id: level.levelID,
 			data_objectId: DataObj.id,
@@ -55,7 +44,7 @@ app.post('/create', async (req, res) => {
 			updatedAt: new Date()
 		})
 		for (const element of level?.elements) {
-			const el = await elements.create({
+			await elements.create({
 				element_name: element.name,
 				levelId: lvl.id,
 				createdAt: new Date(),
@@ -139,7 +128,6 @@ app.get('/link/:parent/:child', async (req, res) => {
 	)
 	res.json({ message: "parent linked successfully" })
 })
-
 
 // Root URI call
 app.get('/', async (req, res) => {
