@@ -1,8 +1,9 @@
 {
   "name": "task-joining-backend",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +15,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mysql2": "^3.1.2",
+    "require-dir": "^1.2.0",
     "sequelize": "^6.28.0",
     "sequelize-cli": "^6.6.0"
   },

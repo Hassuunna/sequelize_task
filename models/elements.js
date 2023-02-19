@@ -1,8 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+import { Model } from 'sequelize'
+export default function (sequelize, DataTypes) {
   class elements extends Model {
     /**
      * Helper method for defining associations.
@@ -11,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      elements.belongsTo(models.levels, {
+        foreignKey: 'levelId',
+        onDelete: 'CASCADE'
+      })
     }
   }
   elements.init({
@@ -19,6 +20,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'elements',
-  });
-  return elements;
-};
+  })
+  return elements
+}
