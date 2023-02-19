@@ -1,11 +1,8 @@
 import { DataObjectModel } from "../models/data_objects.js"
-import dotenv from 'dotenv'
-dotenv.config()
 
 const DataObjects = new DataObjectModel()
 
 const index = async (req, res) => {
-	
 	try {
 		const currentObjects = await DataObjects.index()
 		res.send(currentObjects)
@@ -16,7 +13,7 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
 	try {
-		const dataObjName = req.params.dataObjectName
+		const dataObjName = req.query.dataObjectName
 		const currentObject = await DataObjects.show(dataObjName)
 		res.status(200).send(currentObject)
 	} catch (e) {
@@ -39,7 +36,7 @@ const create = async (req, res) => {
 
 const destroy = async (req, res) => {
 	try {
-		const dataObjName = req.params.dataObjectName
+		const dataObjName = req.query.dataObjectName
 		const deletedObj = await DataObjects.delete(dataObjName)
 		res.status(204).json(deletedObj)
 	} catch (e) {
@@ -48,10 +45,10 @@ const destroy = async (req, res) => {
 }
 
 const objects_routes = (app) => {
-	app.get('/all', index)
-	app.get('/search/:dataObjectName', show)
-	app.post('/create', create)
-	app.delete('/delete/:dataObjectName', destroy)
+	app.get('/objects/index', index)
+	app.get('/objects/show', show)
+	app.post('/objects/create', create)
+	app.delete('/objects/delete', destroy)
 }
 
 export default objects_routes

@@ -5,12 +5,12 @@ solve backend joining task with sequelize nodejs
 
 Routes:
 
-`/create` allows us to create a new data object
+`/objects/create` allows us to create a new data object, sending the object in req.body
 
-`/all` finds all data objects
+`/objects/index` finds all data objects
 
-`/search/:dataObjectName` finds one data object by name
+`/objects/show?dataObjectName=[name]` finds one data object by name
 
-`/delete/:dataObjectName` deletes one data object by name
+`/objects/delete?dataObjectName=[name]` deletes one data object by name
 
-`/link/:parent/:child` links two elements from different levels
+`/elements/link?parent=[parent]&child=[child]` links two elements from different levels

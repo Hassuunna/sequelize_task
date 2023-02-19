@@ -1,16 +1,15 @@
 import models from '../../models/index.js'
 const { data_objects, levels, elements } = models
-//console.log(data_objects);
 
 export class DataObjectModel {
 	async create(DataObject) {
-		await data_objects.create({
+		const DataObj = await data_objects.create({
 			dataobject_name: DataObject.name,
 			createdAt: new Date(),
 			updatedAt: new Date()
 		})
 		for (const level of DataObject?.levels) {
-			await levels.create({
+			const lvl = await levels.create({
 				level_name: level.levelName,
 				level_id: level.levelID,
 				data_objectId: DataObj.id,
@@ -31,7 +30,7 @@ export class DataObjectModel {
 
 	async index() {
 		let dataObjs = await data_objects.findAll({
-			order: [['dataobject_name', 'ASC'], [models.levels, 'level_name', 'ASC'],],
+			order: [['dataobject_name', 'ASC'], [levels, 'level_name', 'ASC'], [levels, elements, 'element_name', 'ASC'],],
 			attributes: ['dataobject_name'],
 			include: [{
 				model: levels,
@@ -44,15 +43,13 @@ export class DataObjectModel {
 				}],
 			}],
 		})
-		console.log('here')
-
 		return (dataObjs)
 	}
 
 	async show(dataObjName) {
 		let dataObj = await data_objects.findOne({
 			where: { dataobject_name: dataObjName },
-			order: [['dataobject_name', 'ASC'], [models.levels, 'level_name', 'ASC'],],
+			order: [['dataobject_name', 'ASC'], [levels, 'level_name', 'ASC'], [levels, elements, 'element_name', 'ASC'],],
 			attributes: ['dataobject_name'],
 			include: [{
 				model: levels,
